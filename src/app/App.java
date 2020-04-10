@@ -1,12 +1,10 @@
+package app;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import java.awt.GridLayout;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.util.ArrayList;
 
-public class Main {
+public class App {
   public static void main(String[] args) {
     // Creating frame
     JFrame frame = new JFrame("Minesweeper");
