@@ -1,3 +1,5 @@
+package app;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -12,6 +14,7 @@ public class Tile extends JButton {
    */
   public Tile() {
     super(new ImageIcon("res/cell_blank.png"));
+    this.setIcon(new ImageIcon("res/cell_blank.png"));
   }
 
   /**
