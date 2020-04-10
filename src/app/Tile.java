@@ -2,16 +2,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Tile extends JButton {
-  final ImageIcon BLANK = new ImageIcon("Sprites/cell_blank.png");
-  final ImageIcon MINE = new ImageIcon("Sprites/cell_mine.png");
-  final ImageIcon FLAG = new ImageIcon("Sprites/cell_flag.png");
+  final ImageIcon BLANK = new ImageIcon("res/cell_blank.png");
+  final ImageIcon MINE = new ImageIcon("res/cell_mine.png");
+  final ImageIcon FLAG = new ImageIcon("res/cell_flag.png");
   private boolean isMine = false;
 
   /**
    * Creates a new Tile.
    */
   public Tile() {
-    super(new ImageIcon("Sprites/cell_blank.png"));
+    super(new ImageIcon("res/cell_blank.png"));
   }
 
   /**
