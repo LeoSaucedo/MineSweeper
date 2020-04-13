@@ -2,7 +2,6 @@ package app;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MinesPanel extends JPanel {
