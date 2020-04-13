@@ -1,4 +1,4 @@
-package app;
+package minesweeper;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -12,7 +12,7 @@ public class MinesPanel extends JPanel {
   public MinesPanel(int difficulty) throws IllegalArgumentException {
     super();
     int width, height, mines;
-    // Set difficulty of game.
+    // Set difficulty of game
     if (difficulty == BEGINNER) {
       width = 9;
       height = 9;
@@ -26,32 +26,31 @@ public class MinesPanel extends JPanel {
       height = 16;
       mines = 99;
     } else {
-      // If the difficulty is invalid.
+      // If the difficulty is invalid
       throw new IllegalArgumentException("Invalid difficulty: " + difficulty);
     }
-    // Create layout of mines.
-    GridLayout layout = new GridLayout(width, height);
-    // 2D array of mines.
-    Tile[][] minesList = new Tile[width][height];
-    // Populating array with blank Tiles.
+    
+    // Create layout of tiles
+    setLayout(new GridLayout(height, width));
+    Tile[][] minesList = new Tile[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         minesList[i][j] = new Tile();
-        this.add(minesList[i][j]);
+        add(minesList[i][j]);
       }
     }
 
-    // Adding mines.
-    int minesPlaced = 0;
+    // Add mines
     Random rand = new Random();
-    while (minesPlaced < mines) {
-      int mineX = rand.nextInt(width);
-      int mineY = rand.nextInt(height);
-      if (!minesList[mineX][mineY].isMine()) {
-        minesList[mineX][mineY].setMineState(true);
-        minesPlaced++;
-      }
+    int mineX, mineY;
+    for(int i = 0; i < mines; i++) {
+      do {
+        mineX = rand.nextInt(width);
+        mineY = rand.nextInt(height);
+      } while(minesList[mineY][mineX].isMine());
+      minesList[mineY][mineX].setMineState(true);
     }
-    this.setLayout(layout);
+
+    System.out.println(getWidth() + ", " + getHeight());
   }
 }
