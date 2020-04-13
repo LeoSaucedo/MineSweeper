@@ -1,4 +1,4 @@
-package app;
+package minesweeper;
 
 import javax.swing.JPanel;
 
