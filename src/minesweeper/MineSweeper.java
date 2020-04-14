@@ -1,15 +1,18 @@
 package minesweeper;
 
 import javax.swing.JFrame;
+import java.awt.FlowLayout;
 
 // Sets up the JFrame
 public class MineSweeper extends JFrame{
 
   public MineSweeper() {
-    setSize(900, 480);
+    setSize(950, 600);
     setTitle("MineSweeper");
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     //setResizable(false);
+    setLayout(new FlowLayout());
+
 
     // Sets the menu bar
     GameBar gb = new GameBar();

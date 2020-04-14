@@ -2,6 +2,7 @@ package minesweeper;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.awt.Dimension;
 import java.util.Random;
 
 public class MinesPanel extends JPanel {
@@ -31,6 +32,7 @@ public class MinesPanel extends JPanel {
     }
     
     // Create layout of tiles
+    setPreferredSize(new Dimension(width*30, height*30));;
     setLayout(new GridLayout(height, width));
     Tile[][] minesList = new Tile[height][width];
     for (int i = 0; i < height; i++) {
@@ -50,7 +52,5 @@ public class MinesPanel extends JPanel {
       } while(minesList[mineY][mineX].isMine());
       minesList[mineY][mineX].setMineState(true);
     }
-
-    System.out.println(getWidth() + ", " + getHeight());
   }
 }

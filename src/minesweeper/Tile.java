@@ -6,9 +6,9 @@ import javax.swing.JButton;
 
 public class Tile extends JButton {
   // Icons available for each Tile
-  static final Icon BLANK = new ImageIcon(new ImageIcon("res/cell_blank.png").getImage().getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH));
-  static final Icon MINE = new ImageIcon(new ImageIcon("res/cell_mine.png").getImage().getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH));
-  static final Icon FLAG = new ImageIcon(new ImageIcon("res/cell_flag.png").getImage().getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH));
+  static final Icon BLANK = new ImageIcon(new ImageIcon("res/cell_blank.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  static final Icon MINE = new ImageIcon(new ImageIcon("res/cell_mine.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  static final Icon FLAG = new ImageIcon(new ImageIcon("res/cell_flag.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
   private boolean flagged = false;
   private boolean isMine;
 
