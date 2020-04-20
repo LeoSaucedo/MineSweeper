@@ -78,39 +78,9 @@ public class Tile extends JButton {
    *                                  incorrect.
    */
   public boolean reveal(int num) {
-    // TODO: I don't know why this doesn't work :(
-    if (!isMine) {
-      if (num < 1 || num > 8) {
-        throw new IllegalArgumentException("Invalid number of adjacent mines: " + num);
-      } else {
-        switch (num) {
-          case 1:
-            setIcon(ONE);
-            break;
-          case 2:
-            setIcon(TWO);
-            break;
-          case 3:
-            setIcon(THREE);
-            break;
-          case 4:
-            setIcon(FOUR);
-            break;
-          case 5:
-            setIcon(FIVE);
-            break;
-          case 6:
-            setIcon(SIX);
-            break;
-          case 7:
-            setIcon(SEVEN);
-            break;
-          case 8:
-            setIcon(EIGHT);
-            break;
-        }
-      }
-    }
+    if (!isMine)
+      setText(Integer.toString(num));
+    setIcon(BLANK);
     setEnabled(false);
     return isMine;
   }
