@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public class MinesPanel extends JPanel implements ActionListener, MouseListener{
+public class MinesPanel extends JPanel implements ActionListener, MouseListener {
   private Random rand;
   private final Difficulty diff;
   private Tile[][] minesList;
@@ -20,7 +20,7 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener{
     rand = new Random();
     // 0 - x, 1 - y
     coord = new int[2][diff.MINES];
-    
+
     // Create layout of tiles
     setLayout(new GridLayout(diff.HEIGHT, diff.WIDTH));
     minesList = new Tile[diff.WIDTH][diff.HEIGHT];
@@ -29,7 +29,7 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener{
         minesList[i][j] = new Tile();
         minesList[i][j].addActionListener(this);
         // Sets button identifier to its number in order
-        minesList[i][j].setActionCommand(Integer.toString(i*diff.HEIGHT + j));
+        minesList[i][j].setActionCommand(Integer.toString(i * diff.HEIGHT + j));
         add(minesList[i][j]);
       }
     }
@@ -38,10 +38,12 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener{
     newGame();
   }
 
-  // Resets the tiles and starts a new game with new mines
+  /**
+   * Resets the tiles and starts a new game with new mines.
+   */
   public void newGame() {
-    for(Tile[] i : minesList)
-      for(Tile j : i)
+    for (Tile[] i : minesList)
+      for (Tile j : i)
         j.reset();
 
     for (int i = 0; i < diff.MINES; i++) {
@@ -56,33 +58,36 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener{
   @Override
   public void actionPerformed(ActionEvent e) {
     int val = Integer.parseInt(e.getActionCommand());
-    // TODO
-    // Figure out how many mines are next to it
-    if(minesList[val/diff.HEIGHT][val%diff.HEIGHT].reveal(7)) {
+    // TODO: Figure out how many mines are next to it.
+    if (minesList[val / diff.HEIGHT][val % diff.HEIGHT].reveal(7)) {
       // Shows Mines
-      for(int i = 0; i < diff.MINES; i++)
+      for (int i = 0; i < diff.MINES; i++)
         minesList[coord[0][i]][coord[1][i]].reveal(0);
       // Disables all tiles
-      for(Tile[] i : minesList)
-        for(Tile j : i)
+      for (Tile[] i : minesList)
+        for (Tile j : i)
           j.setEnabled(false);
     }
   }
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    // For right click (flags)
+    // TODO: Implement right click (flags)
   }
 
   @Override
-  public void mousePressed(MouseEvent e) {}
+  public void mousePressed(MouseEvent e) {
+  }
 
   @Override
-  public void mouseReleased(MouseEvent e) {}
+  public void mouseReleased(MouseEvent e) {
+  }
 
   @Override
-  public void mouseEntered(MouseEvent e) {}
+  public void mouseEntered(MouseEvent e) {
+  }
 
   @Override
-  public void mouseExited(MouseEvent e) {}
+  public void mouseExited(MouseEvent e) {
+  }
 }
