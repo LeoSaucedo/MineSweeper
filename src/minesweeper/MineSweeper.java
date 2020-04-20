@@ -25,7 +25,7 @@ public class MineSweeper extends JFrame {
 
     // Width is width of diff*30, height is height of diff*30 + height of bar
     mines.setSize(diff.WIDTH * 30, diff.HEIGHT * 30);
-    add(menu, BorderLayout.NORTH);
+    // add(menu, BorderLayout.NORTH);
     add(mines, BorderLayout.CENTER);
 
     setVisible(true);
