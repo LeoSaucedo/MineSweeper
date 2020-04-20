@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 
 // Sets up the JFrame
 public class MineSweeper extends JFrame {
-  private Difficulty diff = Difficulty.HARD;
+  private Difficulty diff = Difficulty.MEDIUM;
 
   public MineSweeper() {
     BorderLayout layout = new BorderLayout();
@@ -25,7 +25,7 @@ public class MineSweeper extends JFrame {
 
     // Width is width of diff*30, height is height of diff*30 + height of bar
     mines.setSize(diff.WIDTH * 30, diff.HEIGHT * 30);
-    // add(menu, BorderLayout.NORTH);
+    add(menu, BorderLayout.NORTH);
     add(mines, BorderLayout.CENTER);
 
     setVisible(true);
