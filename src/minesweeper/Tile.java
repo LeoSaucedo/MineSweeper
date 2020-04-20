@@ -6,62 +6,72 @@ import javax.swing.JButton;
 
 public class Tile extends JButton {
   // Icons available for each Tile
-  static final Icon BLANK = new ImageIcon(
-      new ImageIcon("res/cell_blank.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon MINE = new ImageIcon(
-      new ImageIcon("res/cell_mine.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon FLAG = new ImageIcon(
-      new ImageIcon("res/cell_flag.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon ONE = new ImageIcon(
-      new ImageIcon("res/cell_1.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon TWO = new ImageIcon(
-      new ImageIcon("res/cell_2.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon THREE = new ImageIcon(
-      new ImageIcon("res/cell_3.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon FOUR = new ImageIcon(
-      new ImageIcon("res/cell_4.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon FIVE = new ImageIcon(
-      new ImageIcon("res/cell_5.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon SIX = new ImageIcon(
-      new ImageIcon("res/cell_6.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon SEVEN = new ImageIcon(
-      new ImageIcon("res/cell_7.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
-  static final Icon EIGHT = new ImageIcon(
-      new ImageIcon("res/cell_8.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_FAST));
+  private static final Icon BLANK = new ImageIcon(
+      new ImageIcon("res/cell_blank.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon MINE = new ImageIcon(
+      new ImageIcon("res/cell_mine.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon FLAG = new ImageIcon(
+      new ImageIcon("res/cell_flag.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon ONE = new ImageIcon(
+      new ImageIcon("res/cell_1.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon TWO = new ImageIcon(
+      new ImageIcon("res/cell_2.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon THREE = new ImageIcon(
+      new ImageIcon("res/cell_3.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon FOUR = new ImageIcon(
+      new ImageIcon("res/cell_4.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon FIVE = new ImageIcon(
+      new ImageIcon("res/cell_5.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon SIX = new ImageIcon(
+      new ImageIcon("res/cell_6.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon SEVEN = new ImageIcon(
+      new ImageIcon("res/cell_7.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
+  private static final Icon EIGHT = new ImageIcon(
+      new ImageIcon("res/cell_8.png").getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH));
   private boolean flagged;
   private boolean isMine;
+  // The number of nearby mines
+  private int danger;
 
-  /**
-   * Creates a new Tile.
-   */
+  
+  // Creates a new Tile
   public Tile() {
     super(BLANK);
+    setDisabledIcon(BLANK);
     setVerticalTextPosition(JButton.CENTER);
     setHorizontalTextPosition(JButton.CENTER);
+    flagged = false;
+    isMine = false;
+    danger = 0;
   }
 
-  /**
-   * Whether the Tile is a mine or not.
-   */
+  /* Returns the tiles mine state, flag state, and danger, respectively. */
   public boolean isMine() {
     return isMine;
   }
 
-  /**
-   * Sets the state of the Tile.
-   * 
-   * @param isMine Whether the Tile is a mine or not.
-   */
+  public boolean isFlagged() {
+    return flagged;
+  }
+
+  public int danger() {
+    return danger;
+  }
+
+  // Sets the state of the mine
   public void setMineState(boolean isMine) {
     this.isMine = isMine;
     setDisabledIcon(MINE);
   }
 
-  /**
-   * Sets the icon to the flag; unflags if already flagged
-   */
+  // Increases danger
+  public void increaseDanger() {
+    danger++;
+  }
+ 
+  // Sets the icon to the flag; unflags if already flagged
   public void flag() {
-    if (!flagged)
+    if(!flagged)
       setIcon(FLAG);
     else
       setIcon(BLANK);
@@ -69,25 +79,33 @@ public class Tile extends JButton {
     flagged = !flagged;
   }
 
-  /**
-   * Reveals the number of adjacent mines, and whether it is a mine.
-   * 
-   * @param num The number of mines adjacent to it.
-   * @return Whether the Tile is a mine.
-   * @throws IllegalArgumentException If the number of adjacent mines is
-   *                                  incorrect.
-   */
-  public boolean reveal(int num) {
-    if (!isMine)
-      setText(Integer.toString(num));
-    setIcon(BLANK);
+  // Reveals mine or number, returns the number of nearby mines (if isMine returns -1)
+  public int reveal() {
     setEnabled(false);
-    return isMine;
+    if(!isMine) {
+      switch(danger) {
+        case 0: setDisabledIcon(null); break;
+        case 1: setDisabledIcon(ONE); break;
+        case 2: setDisabledIcon(TWO); break;
+        case 3: setDisabledIcon(THREE); break;
+        case 4: setDisabledIcon(FOUR); break;
+        case 5: setDisabledIcon(FIVE); break;
+        case 6: setDisabledIcon(SIX); break;
+        case 7: setDisabledIcon(SEVEN); break;
+        case 8: setDisabledIcon(EIGHT); break;
+      }
+      
+      return danger;
+    }
+    return -1;
   }
 
-  /**
-   * Resets the tile to default.
-   */
+  // Tells if the tile has been revealed
+  public boolean revealed() {
+    return !isEnabled();
+  }
+
+  // Resets the tile To default
   public void reset() {
     setIcon(BLANK);
     setDisabledIcon(BLANK);

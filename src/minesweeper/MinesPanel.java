@@ -28,6 +28,7 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener 
       for (int j = 0; j < diff.HEIGHT; j++) {
         minesList[i][j] = new Tile();
         minesList[i][j].addActionListener(this);
+        minesList[i][j].addMouseListener(this);
         // Sets button identifier to its number in order
         minesList[i][j].setActionCommand(Integer.toString(i * diff.HEIGHT + j));
         add(minesList[i][j]);
@@ -35,59 +36,77 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener 
     }
 
     // Add mines
-    newGame();
+    addMines();
   }
 
-  /**
-   * Resets the tiles and starts a new game with new mines.
-   */
+  // Resets the tiles and starts a new game with new mines
   public void newGame() {
-    for (Tile[] i : minesList)
-      for (Tile j : i)
+    for(Tile[] i : minesList)
+      for(Tile j : i)
         j.reset();
 
+    addMines();
+  }
+
+  // Add mines to the game
+  private void addMines() {
     for (int i = 0; i < diff.MINES; i++) {
       do {
         coord[0][i] = rand.nextInt(diff.WIDTH);
         coord[1][i] = rand.nextInt(diff.HEIGHT);
       } while (minesList[coord[0][i]][coord[1][i]].isMine());
       minesList[coord[0][i]][coord[1][i]].setMineState(true);
+
+      // Add danger to nearby tiles
+      // starts at tile before current one while staying in boundaries of the game
+      for(int j = (coord[0][i] == 0)? 0 : coord[0][i]-1; j <= coord[0][i]+1 && j < diff.WIDTH; j++)
+        for(int k = (coord[1][i] == 0)? 0 : coord[1][i]-1; k <= coord[1][i]+1 && k < diff.HEIGHT; k++)
+          minesList[j][k].increaseDanger();
+    }
+  }
+
+  // Reveals tile
+  private void reveal(int x, int y) {
+    // Checks if tile was already revealed for recursive purposes
+    if(!minesList[x][y].revealed()) {
+      int mines = minesList[x][y].reveal();
+      // If the tile had no mines nearby then those nearby tiles are revealed
+      if(mines == 0) {
+        for(int i = (x == 0)? 0 : x-1; i <= x+1 && i < diff.WIDTH; i++)
+          for(int j = (y == 0)? 0 : y-1; j <= y+1 && j < diff.HEIGHT; j++)
+            reveal(i, j);
+      }
+      // If the tile was a mine then all mines are revealed and the player loses
+      else if(mines == -1) {
+        // Shows Mines
+        for(int i = 0; i < diff.MINES; i++)
+          minesList[coord[0][i]][coord[1][i]].reveal();
+        // Disables all tiles
+        for(Tile[] i : minesList)
+          for(Tile j : i)
+            j.setEnabled(false);
+      }
     }
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     int val = Integer.parseInt(e.getActionCommand());
-    // TODO: Figure out how many mines are next to it.
-    if (minesList[val / diff.HEIGHT][val % diff.HEIGHT].reveal(7)) {
-      // Shows Mines
-      for (int i = 0; i < diff.MINES; i++)
-        minesList[coord[0][i]][coord[1][i]].reveal(0);
-      // Disables all tiles
-      for (Tile[] i : minesList)
-        for (Tile j : i)
-          j.setEnabled(false);
-    }
+    reveal(val/diff.HEIGHT, val%diff.HEIGHT);
   }
 
   @Override
-  public void mouseClicked(MouseEvent e) {
-    // TODO: Implement right click (flags)
-  }
+  public void mouseClicked(MouseEvent e) {}
 
   @Override
-  public void mousePressed(MouseEvent e) {
-  }
+  public void mousePressed(MouseEvent e) {}
 
   @Override
-  public void mouseReleased(MouseEvent e) {
-  }
+  public void mouseReleased(MouseEvent e) {}
 
   @Override
-  public void mouseEntered(MouseEvent e) {
-  }
+  public void mouseEntered(MouseEvent e) {}
 
   @Override
-  public void mouseExited(MouseEvent e) {
-  }
+  public void mouseExited(MouseEvent e) {}
 }
