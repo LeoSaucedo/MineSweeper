@@ -33,8 +33,9 @@ public class Tile extends JButton {
   // The number of nearby mines
   private int danger;
 
-  
-  // Creates a new Tile
+  /**
+   * Creates a new Tile.
+   */
   public Tile() {
     super(BLANK);
     setDisabledIcon(BLANK);
@@ -45,33 +46,53 @@ public class Tile extends JButton {
     danger = 0;
   }
 
-  /* Returns the tiles mine state, flag state, and danger, respectively. */
+  /**
+   * Returns whether the Tile is a mine or not.
+   * 
+   * @return Whether the Tile is a mine.
+   */
   public boolean isMine() {
     return isMine;
   }
 
+  /**
+   * Returns whether the Tile is flagged.
+   * 
+   * @return Whether the Tile is flagged.
+   */
   public boolean isFlagged() {
     return flagged;
   }
 
+  /**
+   * Returns the number of nearby mines.
+   * 
+   * @return The number of nearby mines.
+   */
   public int danger() {
     return danger;
   }
 
-  // Sets the state of the mine
+  /**
+   * Sets whether a Tile is a mine or not.
+   */
   public void setMineState(boolean isMine) {
     this.isMine = isMine;
     setDisabledIcon(MINE);
   }
 
-  // Increases danger
+  /**
+   * Increments the number of mines adjacent to the Tile.
+   */
   public void increaseDanger() {
     danger++;
   }
- 
-  // Sets the icon to the flag; unflags if already flagged
+
+  /**
+   * Sets the icon to the flag.
+   */
   public void flag() {
-    if(!flagged)
+    if (!flagged)
       setIcon(FLAG);
     else
       setIcon(BLANK);
@@ -79,33 +100,63 @@ public class Tile extends JButton {
     flagged = !flagged;
   }
 
-  // Reveals mine or number, returns the number of nearby mines (if isMine returns -1)
+  // Reveals mine or number, returns the number of nearby mines (if isMine returns
+  // -1)
+  /**
+   * Reveals the number of adjacent Mines.
+   * 
+   * @return Whether a Tile is a mine.
+   */
   public int reveal() {
     setEnabled(false);
-    if(!isMine) {
-      switch(danger) {
-        case 0: setDisabledIcon(null); break;
-        case 1: setDisabledIcon(ONE); break;
-        case 2: setDisabledIcon(TWO); break;
-        case 3: setDisabledIcon(THREE); break;
-        case 4: setDisabledIcon(FOUR); break;
-        case 5: setDisabledIcon(FIVE); break;
-        case 6: setDisabledIcon(SIX); break;
-        case 7: setDisabledIcon(SEVEN); break;
-        case 8: setDisabledIcon(EIGHT); break;
+    if (!isMine) {
+      switch (danger) {
+        case 0:
+          setDisabledIcon(null);
+          break;
+        case 1:
+          setDisabledIcon(ONE);
+          break;
+        case 2:
+          setDisabledIcon(TWO);
+          break;
+        case 3:
+          setDisabledIcon(THREE);
+          break;
+        case 4:
+          setDisabledIcon(FOUR);
+          break;
+        case 5:
+          setDisabledIcon(FIVE);
+          break;
+        case 6:
+          setDisabledIcon(SIX);
+          break;
+        case 7:
+          setDisabledIcon(SEVEN);
+          break;
+        case 8:
+          setDisabledIcon(EIGHT);
+          break;
       }
-      
+
       return danger;
     }
     return -1;
   }
 
-  // Tells if the tile has been revealed
+  /**
+   * Returns whether a Tile's status has been revealed.
+   * 
+   * @return Whether the Tile's status has been revealed.
+   */
   public boolean revealed() {
     return !isEnabled();
   }
 
-  // Resets the tile To default
+  /**
+   * Resets the tile to its default state.
+   */
   public void reset() {
     setIcon(BLANK);
     setDisabledIcon(BLANK);

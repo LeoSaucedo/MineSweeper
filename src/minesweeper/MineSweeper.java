@@ -20,7 +20,7 @@ public class MineSweeper extends JFrame {
     setJMenuBar(gb);
 
     // Adds the game to the JFrame
-    MenuPanel menu = new MenuPanel();
+    MenuPanel menu = new MenuPanel(diff.MINES);
     MinesPanel mines = new MinesPanel(diff);
 
     // Width is width of diff*30, height is height of diff*30 + height of bar
