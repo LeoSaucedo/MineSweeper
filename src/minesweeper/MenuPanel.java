@@ -18,13 +18,25 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
-public class MenuPanel extends JPanel {
-  Font segment;
+public class MenuPanel extends JPanel implements ActionListener {
+
+  // Final variables
   static final Icon HAPPY = new ImageIcon(
       new ImageIcon("res/face_happy.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
   static final Icon DEAD = new ImageIcon(
       new ImageIcon("res/face_dead.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
-  int seconds; // Number of seconds since the game has started.
+  static final int GAME_OVER = 0;
+  static final int GAME_ONGOING = 1;
+
+  // Instance variables
+  private Font segment;
+  private Timer timer;
+  public int minesLeft;
+  int seconds;
+  private MinesPanel minesPanel;
+  JButton menuButton;
+  JLabel numMines;
+  JLabel time;
 
   /**
    * Creates a new MenuPanel.
@@ -34,29 +46,31 @@ public class MenuPanel extends JPanel {
   public MenuPanel(int mines) {
     super();
     seconds = 0;
+    minesLeft = mines;
     // Adding custom font.
     try {
       segment = Font.createFont(Font.TRUETYPE_FONT, new File("res/segment.ttf")).deriveFont(48f);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/segment.ttf")).deriveFont(48f));
     } catch (FontFormatException | IOException e) {
-      System.out.println("This is an error.");
       e.printStackTrace();
     }
     BorderLayout layout = new BorderLayout();
     setLayout(layout);
-    JButton menuButton = new JButton(HAPPY);
+    menuButton = new JButton(HAPPY);
     menuButton.setPreferredSize(new Dimension(50, 50));
+    menuButton.addActionListener(this);
+    // menuButton.setActionCommand("Test");
 
     // Label representing the number of remaining mines.
-    JLabel numMines = new JLabel(getFormattedNumber(mines));
+    numMines = new JLabel(getFormattedNumber(minesLeft));
     numMines.setOpaque(true);
     numMines.setBackground(Color.BLACK);
     numMines.setForeground(Color.RED);
     numMines.setFont(segment);
 
     // Label representing the alotted time.
-    JLabel time = new JLabel(getFormattedNumber(seconds));
+    time = new JLabel(getFormattedNumber(seconds));
     time.setOpaque(true);
     time.setBackground(Color.BLACK);
     time.setForeground(Color.RED);
@@ -71,13 +85,65 @@ public class MenuPanel extends JPanel {
       }
     };
 
-    Timer timer = new Timer(1000, actionListener);
+    timer = new Timer(1000, actionListener);
     timer.start();
 
     // Adding all the elements to the panel.
     add(numMines, BorderLayout.WEST);
     add(btnPanel, BorderLayout.CENTER);
     add(time, BorderLayout.EAST);
+  }
+
+  /**
+   * Stops the currently running timer.
+   */
+  void stopTimer() {
+    timer.stop();
+  }
+
+  /**
+   * Sets the minesPanel variable.
+   * 
+   * @param mp The MinesPanel in the current game.
+   */
+  void setMinesPanel(MinesPanel mp) {
+    minesPanel = mp;
+  }
+
+  /**
+   * Reduces the mines left counter by 1.
+   * 
+   * @return Whether the user has flagged all existing mines.
+   */
+  boolean addFlaggedMine() {
+    minesLeft--;
+    numMines.setText(getFormattedNumber(minesLeft));
+    return minesLeft == 0;
+  }
+
+  /**
+   * Set the game status for the face button.
+   */
+  void setGameStatus(int status) {
+    switch (status) {
+      case 0:
+        menuButton.setIcon(DEAD);
+        break;
+      case 1:
+        menuButton.setIcon(HAPPY);
+    }
+  }
+
+  /**
+   * Restarts the game state.
+   */
+  void newGame() {
+    setGameStatus(GAME_ONGOING);
+    minesPanel.newGame();
+    minesLeft = minesPanel.diff.MINES;
+    seconds = 0;
+    timer.start();
+    numMines.setText(getFormattedNumber(minesLeft));
   }
 
   /**
@@ -95,5 +161,10 @@ public class MenuPanel extends JPanel {
     }
     out += num;
     return out;
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    newGame();
   }
 }
