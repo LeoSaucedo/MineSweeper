@@ -39,8 +39,6 @@ public class Tile extends JButton {
   public Tile() {
     super(BLANK);
     setDisabledIcon(BLANK);
-    setVerticalTextPosition(JButton.CENTER);
-    setHorizontalTextPosition(JButton.CENTER);
     flagged = false;
     isMine = false;
     danger = 0;
@@ -91,13 +89,23 @@ public class Tile extends JButton {
   /**
    * Sets the icon to the flag.
    */
-  public void flag() {
-    if (!flagged)
-      setIcon(FLAG);
-    else
-      setIcon(BLANK);
-
+  public boolean flag() {
+    if (!flagged) {
+      setDisabledIcon(FLAG);
+      setEnabled(false);
+    }
+    else{
+      setEnabled(true);
+      if(isMine)
+        setDisabledIcon(MINE);
+      else
+        setDisabledIcon(BLANK);
+      
+    }
+      
     flagged = !flagged;
+
+    return flagged;
   }
 
   // Reveals mine or number, returns the number of nearby mines (if isMine returns
@@ -162,6 +170,7 @@ public class Tile extends JButton {
     setDisabledIcon(BLANK);
     flagged = false;
     isMine = false;
+    danger = 0;
     setEnabled(true);
   }
 }

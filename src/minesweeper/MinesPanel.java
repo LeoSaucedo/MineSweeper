@@ -1,16 +1,18 @@
 package minesweeper;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public class MinesPanel extends JPanel implements ActionListener, MouseListener {
+public class MinesPanel extends JPanel implements ActionListener {
   private Random rand;
-  final Difficulty diff;
+  private Difficulty diff;
   private Tile[][] minesList;
   private int[][] coord;
   private MenuPanel menuPanel;
@@ -25,11 +27,34 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener 
     // Create layout of tiles
     setLayout(new GridLayout(diff.HEIGHT, diff.WIDTH));
     minesList = new Tile[diff.WIDTH][diff.HEIGHT];
-    for (int i = 0; i < diff.WIDTH; i++) {
-      for (int j = 0; j < diff.HEIGHT; j++) {
+    for (int j = 0; j < diff.HEIGHT; j++) {
+      for (int i = 0; i < diff.WIDTH; i++) {
         minesList[i][j] = new Tile();
         minesList[i][j].addActionListener(this);
-        minesList[i][j].addMouseListener(this);
+        minesList[i][j].addMouseListener(new FlagListener(i, j));
+        // Sets button identifier to its number in order
+        minesList[i][j].setActionCommand(Integer.toString(i * diff.HEIGHT + j));
+        add(minesList[i][j]);
+      }
+    }
+
+    // Add mines
+    addMines();
+  }
+
+  public void changeDiff(Difficulty difficulty) {
+    diff = difficulty;
+    // 0 - x, 1 - y
+    coord = new int[2][diff.MINES];
+
+    // Create layout of tiles
+    setLayout(new GridLayout(diff.HEIGHT, diff.WIDTH));
+    minesList = new Tile[diff.WIDTH][diff.HEIGHT];
+    for (int j = 0; j < diff.HEIGHT; j++) {
+      for (int i = 0; i < diff.WIDTH; i++) {
+        minesList[i][j] = new Tile();
+        minesList[i][j].addActionListener(this);
+        minesList[i][j].addMouseListener(new FlagListener(i, j));
         // Sets button identifier to its number in order
         minesList[i][j].setActionCommand(Integer.toString(i * diff.HEIGHT + j));
         add(minesList[i][j]);
@@ -101,29 +126,59 @@ public class MinesPanel extends JPanel implements ActionListener, MouseListener 
     }
   }
 
+  public void checkWon() {
+    for(int i = 0; i < diff.MINES; i++) {
+      if(!minesList[coord[0][i]][coord[1][i]].isFlagged()) {
+        return;
+      }
+    }
+    menuPanel.stopTimer();
+    for (Tile[] i : minesList)
+      for (Tile j : i)
+        j.setEnabled(false);
+    
+  }
+
   @Override
   public void actionPerformed(ActionEvent e) {
     int val = Integer.parseInt(e.getActionCommand());
     reveal(val / diff.HEIGHT, val % diff.HEIGHT);
   }
 
-  @Override
-  public void mouseClicked(MouseEvent e) {
-  }
+  class FlagListener implements MouseListener {
 
-  @Override
-  public void mousePressed(MouseEvent e) {
-  }
+    private int x;
+    private int y;
 
-  @Override
-  public void mouseReleased(MouseEvent e) {
-  }
+    public FlagListener(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
 
-  @Override
-  public void mouseEntered(MouseEvent e) {
-  }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if(SwingUtilities.isRightMouseButton(e) && (minesList[x][y].isEnabled() || minesList[x][y].isFlagged())) {  
+        if(minesList[x][y].flag()) {
+          if(menuPanel.addFlaggedMine()) {
+            checkWon();
+          }
+        }
+        else if(menuPanel.removeFlaggedMine()) {
+          checkWon();
+        }
+      }
+    }
 
-  @Override
-  public void mouseExited(MouseEvent e) {
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
   }
 }

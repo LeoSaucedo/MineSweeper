@@ -21,9 +21,9 @@ import javax.swing.Timer;
 public class MenuPanel extends JPanel implements ActionListener {
 
   // Final variables
-  static final Icon HAPPY = new ImageIcon(
+  private static final Icon HAPPY = new ImageIcon(
       new ImageIcon("res/face_happy.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
-  static final Icon DEAD = new ImageIcon(
+  private static final Icon DEAD = new ImageIcon(
       new ImageIcon("res/face_dead.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
   static final int GAME_OVER = 0;
   static final int GAME_ONGOING = 1;
@@ -31,12 +31,13 @@ public class MenuPanel extends JPanel implements ActionListener {
   // Instance variables
   private Font segment;
   private Timer timer;
-  public int minesLeft;
-  int seconds;
+  private int totalMines;
+  private int minesLeft;
+  private int seconds;
   private MinesPanel minesPanel;
-  JButton menuButton;
-  JLabel numMines;
-  JLabel time;
+  private JButton menuButton;
+  private JLabel numMines;
+  private JLabel time;
 
   /**
    * Creates a new MenuPanel.
@@ -46,7 +47,7 @@ public class MenuPanel extends JPanel implements ActionListener {
   public MenuPanel(int mines) {
     super();
     seconds = 0;
-    minesLeft = mines;
+    totalMines = minesLeft = mines;
     // Adding custom font.
     try {
       segment = Font.createFont(Font.TRUETYPE_FONT, new File("res/segment.ttf")).deriveFont(48f);
@@ -97,7 +98,7 @@ public class MenuPanel extends JPanel implements ActionListener {
   /**
    * Stops the currently running timer.
    */
-  void stopTimer() {
+  public void stopTimer() {
     timer.stop();
   }
 
@@ -106,7 +107,7 @@ public class MenuPanel extends JPanel implements ActionListener {
    * 
    * @param mp The MinesPanel in the current game.
    */
-  void setMinesPanel(MinesPanel mp) {
+  public void setMinesPanel(MinesPanel mp) {
     minesPanel = mp;
   }
 
@@ -115,8 +116,13 @@ public class MenuPanel extends JPanel implements ActionListener {
    * 
    * @return Whether the user has flagged all existing mines.
    */
-  boolean addFlaggedMine() {
+  public boolean addFlaggedMine() {
     minesLeft--;
+    numMines.setText(getFormattedNumber(minesLeft));
+    return minesLeft == 0;
+  }
+  public boolean removeFlaggedMine() {
+    minesLeft++;
     numMines.setText(getFormattedNumber(minesLeft));
     return minesLeft == 0;
   }
@@ -124,7 +130,7 @@ public class MenuPanel extends JPanel implements ActionListener {
   /**
    * Set the game status for the face button.
    */
-  void setGameStatus(int status) {
+  public void setGameStatus(int status) {
     switch (status) {
       case 0:
         menuButton.setIcon(DEAD);
@@ -137,11 +143,12 @@ public class MenuPanel extends JPanel implements ActionListener {
   /**
    * Restarts the game state.
    */
-  void newGame() {
+  public void newGame() {
     setGameStatus(GAME_ONGOING);
     minesPanel.newGame();
-    minesLeft = minesPanel.diff.MINES;
+    minesLeft = totalMines;
     seconds = 0;
+    time.setText(getFormattedNumber(seconds));
     timer.start();
     numMines.setText(getFormattedNumber(minesLeft));
   }
@@ -154,12 +161,17 @@ public class MenuPanel extends JPanel implements ActionListener {
    */
   private String getFormattedNumber(int num) {
     String out = "";
-    if (num < 10) {
-      out += "00";
-    } else if (num < 100) {
+    if(num < 0) {
+      out += "-";
+      num = -num;
+    }
+    else {
       out += "0";
     }
-    out += num;
+    if (num < 10) {
+      out += "0";
+    } 
+    out += num%100;
     return out;
   }
 
