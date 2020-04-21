@@ -2,15 +2,16 @@ package minesweeper;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 // Sets up the JFrame
 public class MineSweeper extends JFrame {
-  private Difficulty diff = Difficulty.MEDIUM;
+  private Difficulty diff = Difficulty.EASY;
 
   public MineSweeper() {
     BorderLayout layout = new BorderLayout();
     setLayout(layout);
-    setSize(diff.WIDTH * 30, diff.HEIGHT * 30);
+    setSize(diff.WIDTH * 30, diff.HEIGHT * 30 + 60);
     setTitle("MineSweeper");
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setResizable(false);
@@ -26,7 +27,7 @@ public class MineSweeper extends JFrame {
     mines.setMenuPanel(menu);
 
     // Width is width of diff*30, height is height of diff*30 + height of bar
-    mines.setSize(diff.WIDTH * 30, diff.HEIGHT * 30);
+    mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
     add(menu, BorderLayout.NORTH);
     add(mines, BorderLayout.CENTER);
 
