@@ -121,6 +121,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     numMines.setText(getFormattedNumber(minesLeft));
     return minesLeft == 0;
   }
+
   public boolean removeFlaggedMine() {
     minesLeft++;
     numMines.setText(getFormattedNumber(minesLeft));
@@ -160,18 +161,15 @@ public class MenuPanel extends JPanel implements ActionListener {
    * @return The formatted string.
    */
   private String getFormattedNumber(int num) {
+    if (num > 999)
+      return "999";
     String out = "";
-    if(num < 0) {
-      out += "-";
-      num = -num;
-    }
-    else {
-      out += "0";
-    }
     if (num < 10) {
+      out += "00";
+    } else if (num < 100) {
       out += "0";
-    } 
-    out += num%100;
+    }
+    out += num;
     return out;
   }
 
