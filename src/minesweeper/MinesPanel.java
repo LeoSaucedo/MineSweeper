@@ -127,8 +127,8 @@ public class MinesPanel extends JPanel implements ActionListener {
   }
 
   public void checkWon() {
-    for(int i = 0; i < diff.MINES; i++) {
-      if(!minesList[coord[0][i]][coord[1][i]].isFlagged()) {
+    for (int i = 0; i < diff.MINES; i++) {
+      if (!minesList[coord[0][i]][coord[1][i]].isFlagged()) {
         return;
       }
     }
@@ -136,7 +136,7 @@ public class MinesPanel extends JPanel implements ActionListener {
     for (Tile[] i : minesList)
       for (Tile j : i)
         j.setEnabled(false);
-    
+    // TODO: Win actions
   }
 
   @Override
@@ -157,28 +157,31 @@ public class MinesPanel extends JPanel implements ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if(SwingUtilities.isRightMouseButton(e) && (minesList[x][y].isEnabled() || minesList[x][y].isFlagged())) {  
-        if(minesList[x][y].flag()) {
-          if(menuPanel.addFlaggedMine()) {
+      if (SwingUtilities.isRightMouseButton(e) && (minesList[x][y].isEnabled() || minesList[x][y].isFlagged())) {
+        if (minesList[x][y].flag()) {
+          if (menuPanel.addFlaggedMine()) {
             checkWon();
           }
-        }
-        else if(menuPanel.removeFlaggedMine()) {
+        } else if (menuPanel.removeFlaggedMine()) {
           checkWon();
         }
       }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
   }
 }

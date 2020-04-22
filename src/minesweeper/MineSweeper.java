@@ -73,19 +73,23 @@ public class MineSweeper extends JFrame implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    // TODO: Fix resizing of the mines panel.
     if (e.getSource() == newBtn) {
-      menu.newGame();
+      menu.newGame(diff.MINES);
     } else if (e.getSource() == beginnerBtn) {
       diff = Difficulty.EASY;
       mines.changeDiff(diff);
-      menu.newGame();
+      menu.newGame(diff.MINES);
+      mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
     } else if (e.getSource() == intermediateBtn) {
       diff = Difficulty.MEDIUM;
       mines.changeDiff(diff);
+      menu.newGame(diff.MINES);
+      mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
     } else if (e.getSource() == expertBtn) {
       diff = Difficulty.HARD;
       mines.changeDiff(diff);
+      menu.newGame(diff.MINES);
+      mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
     }
   }
 }

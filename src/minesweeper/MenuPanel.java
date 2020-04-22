@@ -61,7 +61,6 @@ public class MenuPanel extends JPanel implements ActionListener {
     menuButton = new JButton(HAPPY);
     menuButton.setPreferredSize(new Dimension(50, 50));
     menuButton.addActionListener(this);
-    // menuButton.setActionCommand("Test");
 
     // Label representing the number of remaining mines.
     numMines = new JLabel(getFormattedNumber(minesLeft));
@@ -143,11 +142,13 @@ public class MenuPanel extends JPanel implements ActionListener {
 
   /**
    * Restarts the game state.
+   * 
+   * @param mines The number of mines from the new difficulty.
    */
-  public void newGame() {
+  public void newGame(int mines) {
+    totalMines = minesLeft = mines;
     setGameStatus(GAME_ONGOING);
     minesPanel.newGame();
-    minesLeft = totalMines;
     seconds = 0;
     time.setText(getFormattedNumber(seconds));
     timer.start();
@@ -175,6 +176,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    newGame();
+    newGame(totalMines);
   }
 }
