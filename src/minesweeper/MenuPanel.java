@@ -22,9 +22,9 @@ public class MenuPanel extends JPanel implements ActionListener {
 
   // Final variables
   private static final Icon HAPPY = new ImageIcon(
-      new ImageIcon("res/face_happy.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
+      new ImageIcon("res/img/face_happy.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
   private static final Icon DEAD = new ImageIcon(
-      new ImageIcon("res/face_dead.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
+      new ImageIcon("res/img/face_dead.png").getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_FAST));
   static final int GAME_OVER = 0;
   static final int GAME_ONGOING = 1;
 

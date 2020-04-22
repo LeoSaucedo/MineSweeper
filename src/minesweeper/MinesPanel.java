@@ -10,6 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
+import java.io.File;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+
+import java.io.IOException;
+
 public class MinesPanel extends JPanel implements ActionListener {
   private Random rand;
   private Difficulty diff;
@@ -114,6 +124,7 @@ public class MinesPanel extends JPanel implements ActionListener {
       }
       // If the tile was a mine then all mines are revealed and the player loses
       else if (mines == -1) {
+        playSound("res/sound/ded.wav");
         menuPanel.setGameStatus(MenuPanel.GAME_OVER);
         menuPanel.stopTimer();
         // Shows Mines
@@ -138,6 +149,19 @@ public class MinesPanel extends JPanel implements ActionListener {
       for (Tile j : i)
         j.setEnabled(false);
     // TODO: Win actions
+    playSound("res/sound/tada.wav");
+    JOptionPane.showMessageDialog(this, "Congratulations! You won!", "Winner", JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  private void playSound(String path) {
+    try {
+      AudioInputStream sound = AudioSystem.getAudioInputStream(new File(path).getAbsoluteFile());
+      Clip clip = AudioSystem.getClip();
+      clip.open(sound);
+      clip.start();
+    } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

@@ -1,6 +1,5 @@
 package minesweeper;
 
-import javax.lang.model.util.ElementScanner6;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -76,8 +75,7 @@ public class MineSweeper extends JFrame implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == newBtn) {
       menu.newGame(diff.MINES);
-    } 
-    else {
+    } else {
       if (e.getSource() == beginnerBtn)
         diff = Difficulty.EASY;
       else if (e.getSource() == intermediateBtn)
