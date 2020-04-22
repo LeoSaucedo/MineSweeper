@@ -43,6 +43,7 @@ public class MinesPanel extends JPanel implements ActionListener {
   }
 
   public void changeDiff(Difficulty difficulty) {
+    removeAll();
     diff = difficulty;
     // 0 - x, 1 - y
     coord = new int[2][diff.MINES];

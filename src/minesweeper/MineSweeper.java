@@ -1,5 +1,6 @@
 package minesweeper;
 
+import javax.lang.model.util.ElementScanner6;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -75,18 +76,17 @@ public class MineSweeper extends JFrame implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == newBtn) {
       menu.newGame(diff.MINES);
-    } else if (e.getSource() == beginnerBtn) {
-      diff = Difficulty.EASY;
-      mines.changeDiff(diff);
-      menu.newGame(diff.MINES);
-      mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
-    } else if (e.getSource() == intermediateBtn) {
-      diff = Difficulty.MEDIUM;
-      mines.changeDiff(diff);
-      menu.newGame(diff.MINES);
-      mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
-    } else if (e.getSource() == expertBtn) {
-      diff = Difficulty.HARD;
+    } 
+    else {
+      if (e.getSource() == beginnerBtn)
+        diff = Difficulty.EASY;
+      else if (e.getSource() == intermediateBtn)
+        diff = Difficulty.MEDIUM;
+      else if (e.getSource() == expertBtn)
+        diff = Difficulty.HARD;
+      else
+        return;
+      setSize(diff.WIDTH * 30, diff.HEIGHT * 30 + 60);
       mines.changeDiff(diff);
       menu.newGame(diff.MINES);
       mines.setPreferredSize(new Dimension(diff.WIDTH * 30, diff.HEIGHT * 30));
